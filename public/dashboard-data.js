@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleButton = document.getElementById('toggleChartButton');
   const chartContainer = document.getElementById('chartContainer');
   const closeButton = document.getElementById('closeChartButton');
-  const fachabteilungSelect = document.getElementById('fachabteilungSelect')
+  const fachabteilungSelect = document.getElementById('fachabteilungSelect') // hier gegenchecken, ob benötigt
 
   document.getElementById('fachabteilungSelect').addEventListener('change', function () {
     const selectedFach = this.value;
@@ -115,22 +115,29 @@ function initChart(fachabteilung = 'INSG') {
     })
     .catch(err => console.error('Fehler beim Laden der CSV:', err));
 }
+  // Checkbox-Logik für Layer-Schalter - Hilfe von ChatGPT
+  document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(function (checkbox) {
+  checkbox.addEventListener('change', function () {
+    const layerName = this.dataset.layer;
+    const layer = layerMap[layerName];
+    if (!layer) return;
 
-// Layerbutton + ausklappbar, kopiert
-const toggle = document.getElementById('layer-toggle');
-const button = document.getElementById('toggle-button');
-
-button.addEventListener('click', () => {
-  toggle.classList.toggle('open');
-});
-
-const checkboxes = document.querySelectorAll('#layer-panel input[type=checkbox]');
-
-checkboxes.forEach(chk => {
-  chk.addEventListener('change', (e) => {
-    const layer = e.target.dataset.layer;
-    const visible = e.target.checked;
-    // Hier rufst du deinen Geoserver-Layer an/aus Logik auf, z.B.:
-    console.log(`Layer ${layer} wird ${visible ? 'aktiviert' : 'deaktiviert'}`);
+    if (this.checked) {
+      layer.addTo(map);
+    } else {
+      map.removeLayer(layer);
+    }
   });
+});
+  // Layer-Schalter-Panel öffnen/schließen
+  document.getElementById('toggleLayerButton').addEventListener('click', function () {
+  const layerToggle = document.getElementById('layer-toggle');
+  const layerPanel = document.getElementById('layer-panel');
+  layerToggle.classList.toggle('open');
+
+  if (layerToggle.classList.contains('open')) {
+    layerPanel.style.display = 'block';
+  } else {
+    layerPanel.style.display = 'none';
+  }
 });
