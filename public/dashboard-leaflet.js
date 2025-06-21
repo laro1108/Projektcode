@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
 //Baselayer einbinden
 
 // Overlays wms vom geoserver
-const Layername1 = L.tileLayer.wms('http://localhost:8080/geoserver/webseite/1km_krankenhaus', {
+L.tileLayer.wms('http://localhost:8080/geoserver/webseite/1km_krankenhaus', {
   layers: 'workspace:webseite',
   format: 'image/png',
   transparent: true
   }).addTo(map);
-const Layername2 = L.tileLayer.wms('http://localhost:geoserver/speicherort', {
+L.tileLayer.wms('http://localhost:geoserver/speicherort', {
   layers: 'workspace:Beispiel',
   format: 'image/png',
   transparent: true
