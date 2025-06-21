@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <!-- Im Head müssen externe und lokale JS/CSS-Dateien geladen werden -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Fetzige Karte</title>
+
+  <!-- Leaflet CSS und JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Eigene CSS und JS -->
+  <link rel="stylesheet" href="dashboard-styles.css">
+  <script type="text/javascript" src="dashboard-leaflet.js"></script>
+  <script type="text/javascript" src="dashboard-data.js"></script>
+
+  <!--Automatisches Neuladen aktivieren-->
+  <script src="http://localhost:53000/livereload.js"></script>
+  <!--Highchart einbinden-->
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+</head>
+
+<body>
+  <h1>Fetzige Karte</h1>
+
+  <!-- Div, in welches die Karte geladen wird -->
+  <div id="myMap">Noch keine Karte geladen</div>
+
+  <!-- Button für Layer (ein + ausklappbar) -->
+  <div id="layer-toggle" class="closed">
+    <button id="toggle-button">Layer</button>
+    <div id="layer-panel">
+      <label><input type="checkbox" data-layer="layer1"> Layer 1</label><br>
+      <label><input type="checkbox" data-layer="layer2"> Layer 2</label><br>
+      <label><input type="checkbox" data-layer="layer3"> Layer 3</label>
+    </div>
+  </div>
+
+  <!-- Button für Chart -->
+  <div id="toggleChartButton">Diagramm</div>
+
+  <!-- Chart-Container -->
+
+  <div id="chartContainer">
+     <label for="fachabteilungSelect">Fachabteilung:</label>
+  <select id="fachabteilungSelect">
+  <option value="INSG">Gesamtbetten</option>
+  <option value="Innere_Medizin">Innere Medizin</option>
+  <option value="Geriatrie">Geriatrie</option>
+  <option value="Kardiologie">Kardiologie</option>
+  <option value="Rheumatologie">Rheumatologie</option>
+  <option value="Lungenheilkunde">Lungenheilkunde</option>
+  <option value="Neurologie">Neurologie</option>
+  <option value="Gefaesschirugie">Gefäßchirurgie</option>
+  <option value="Herzchirugie">Herzchirurgie</option>
+  <option value="Orthopaedie">Orthopädie</option>
+  <option value="Palliativ">Palliativ</option>
+</select>
+    <div id="closeChartButton">x</div>
+    <div id="chart-inner-container"></div>
+  </div>
+
+  <!-- Div, in welchem die Position des Users angezeigt wird -->
+  <div id="userCoordinates"></div>
+
+<!-- Button für Layer (ein + ausklappbar) -->
+  <div id="Apotheken-toggle" class="closed">
+    <button id="toggle-button">Layer</button>
+  </div>
+
+</body>

@@ -1,0 +1,136 @@
+// Setze globale Variablen 
+var poiList = [];
+var userLongitude = 0.0;
+var userLatitude = 0.0;
+
+// Bestimmen der aktuellen Position und abspeichern nach userLongitude und userLatitude
+function getUserCoordinates() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log('[getUserLocation] Position des Nutzers:', position.coords);
+      userLongitude = position.coords.longitude;
+      userLatitude = position.coords.latitude;
+      document.getElementById('userCoordinates').innerHTML = "(" +
+        userLongitude + ", " + userLatitude + ")";
+    }, error => {
+      if (error.code === error.POSITION_UNAVAILABLE) {
+        console.warn('Position unbekannt, versuche es später erneut.');
+      } else {
+        console.error('Geolocation-Fehler:', error.message);
+      }
+    });
+  }
+}
+
+// Toggle-Button Klick Für Chart verantwortlich
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleButton = document.getElementById('toggleChartButton');
+  const chartContainer = document.getElementById('chartContainer');
+  const closeButton = document.getElementById('closeChartButton');
+  const fachabteilungSelect = document.getElementById('fachabteilungSelect')
+
+  document.getElementById('fachabteilungSelect').addEventListener('change', function () {
+    const selectedFach = this.value;
+    initChart(selectedFach);
+  });
+
+  // Chart über Button zu Öffnen, aber auch wieder zu schließen zwecks Intuitivität
+  function closeChart() {
+    chartContainer.style.display = 'none';
+    toggleButton.innerText = 'Diagramm'; // zurücksetzen
+  }
+
+  toggleButton.addEventListener('click', () => {
+    if (chartContainer.style.display === 'block') {
+      closeChart();
+    } else {
+      chartContainer.style.display = 'block';
+
+      const selectedFach = document.getElementById('fachabteilungSelect').value;
+      initChart(selectedFach);
+
+      toggleButton.innerText = 'Diagramm';
+    }
+  });
+  closeButton.addEventListener('click', () => {
+    closeChart();
+  });
+});
+
+// Daten für Chart anpassen
+function initChart(fachabteilung = 'INSG') {
+  fetch('./data/KHVerzeichnis_highchart.csv')
+    .then(response => response.text())
+    .then(csvText => {
+      const lines = csvText.trim().split('\n');
+      const headers = lines[0].split(';').map(h => h.trim());
+
+      const index = headers.indexOf(fachabteilung);
+      if (index === -1) {
+        console.error(`Spalte "${fachabteilung}" nicht gefunden.`);
+        return;
+      }
+
+      const data = {};
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(';').map(col => col.trim());
+        const stadt = cols[0];
+        const bettenZahl = Number(cols[index]);
+
+        console.log(`Zeile ${i}: ${stadt} => ${bettenZahl}`);
+
+        if (!stadt || isNaN(bettenZahl)) continue;
+        data[stadt] = bettenZahl;
+      }
+
+      const categories = Object.keys(data);
+      const values = Object.values(data);
+
+      Highcharts.chart('chart-inner-container', {
+        chart: { type: 'column' },
+        title: { text: `Krankenhausbetten (${fachabteilung})` },
+        xAxis: {
+          categories: categories,
+          title: { text: 'Stadt' },
+          labels: {
+            rotation: -65,
+            style: { fontSize: '12px' },
+            step: 1,
+            allowOverlap: true,
+            overflow: 'justify'
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: { text: 'Anzahl Betten' }
+        },
+        series: [{
+          name: 'Betten',
+          data: categories.map(stadt => ({
+            name: stadt,
+            y: data[stadt]
+          }))
+        }]
+      });
+    })
+    .catch(err => console.error('Fehler beim Laden der CSV:', err));
+}
+
+// Layerbutton + ausklappbar, kopiert
+const toggle = document.getElementById('layer-toggle');
+const button = document.getElementById('toggle-button');
+
+button.addEventListener('click', () => {
+  toggle.classList.toggle('open');
+});
+
+const checkboxes = document.querySelectorAll('#layer-panel input[type=checkbox]');
+
+checkboxes.forEach(chk => {
+  chk.addEventListener('change', (e) => {
+    const layer = e.target.dataset.layer;
+    const visible = e.target.checked;
+    // Hier rufst du deinen Geoserver-Layer an/aus Logik auf, z.B.:
+    console.log(`Layer ${layer} wird ${visible ? 'aktiviert' : 'deaktiviert'}`);
+  });
+});

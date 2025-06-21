@@ -1,0 +1,32 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon --ext js,html,css",
+    "devOpen": "open-cli http://localhost:53000/ && npm run dev"
+  },
+  "author": "Jens Heidrich",
+  "license": "MIT",
+  "dependencies": {
+    "connect-livereload": "^0.6.1",
+    "csv-parser": "^3.2.0",
+    "express": "^5.1.0",
+    "morgan": "^1.10.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.26.9",
+    "livereload": "^0.9.3",
+    "nodemon": "^3.1.9",
+    "open-cli": "^8.0.0"
+  },
+  "overrides": {
+    "glob": "11.0.0",
+    "node-gyp": "10.2.0"
+  },
+  "name": "projektcode",
+  "version": "1.0.0",
+  "description": "Dieses Packet enthält den Rahmen für die Entwicklung des Web-Servers. Dieser nutzt Express.js (https://expressjs.com/de/) als Webserver und SQLite\r (https://www.sqlite.org/) als Datenbank. Für das Erstellen und den Zugriff auf die Datenbank nutzen wir das Node-Module sqlite3 (https://www.sqlitetutorial.net/sqlite-nodejs/).",
+  "main": "rest-api.js",
+  "keywords": []
+}
