@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     attribution: 'Daten: GeoServer'
   });
 
-  var aerzteLayerPuffer  = L.tileLayer.wms('http://localhost:8080/geoserver/webseite/wms', {
+  var aerzteLayerPuffer = L.tileLayer.wms('http://localhost:8080/geoserver/webseite/wms', {
     layers: 'webseite:puffer_ärzte',
     format: 'image/png',
     transparent: true,
@@ -60,23 +60,43 @@ document.addEventListener('DOMContentLoaded', function () {
   // Standard-Layer anzeigen
   boundaryLayer.addTo(map);
 
-  // Checkbox-Logik für Layer-Schalter - Hilfe von ChatGPT
+  const layerMap = {
+    krankenhaus: krankenhausLayer,
+    krankenhausPuffer: krankenhausLayerPuffer,
+    apotheken: apothekenLayer,
+    apothekenPuffer: apothekenLayerPuffer,
+    aerzte: aerzteLayer,
+    aerztePuffer: aerzteLayerPuffer
+  };
+
+  // Hilfe con chatgpt
   document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {
-      var layerName = this.dataset.layer;
+      const layerName = this.dataset.layer;
+      const layer = layerMap[layerName]; // Holt das passende Layer-Objekt
 
-      if (layerName === 'layer1') {
-        if (this.checked) {
-          krankenhausLayer.addTo(map);
-        } else {
-          map.removeLayer(krankenhausLayer);
-        }
+      if (!layer) return;
+
+      if (this.checked) {
+        layer.addTo(map);
+      } else {
+        map.removeLayer(layer);
       }
     });
   });
 
-  // Layer-Schalter-Panel öffnen/schließen
-  document.getElementById('layer-toggle').addEventListener('click', function () {
-    this.classList.toggle('open');
+  // Nur Toggle-Button öffnet/schließt das Menü
+  const toggleButton = document.getElementById("toggle-button");
+  const layerToggle = document.getElementById("layer-toggle");
+  const layerPanel = document.getElementById("layer-panel");
+
+  toggleButton.addEventListener("click", function (e) {
+    e.stopPropagation(); // verhindert ungewollte Events
+    layerToggle.classList.toggle("open");
+  });
+
+  // Klicks im Panel selbst sollen das Menü nicht schließen
+  layerPanel.addEventListener("click", function (e) {
+    e.stopPropagation();
   });
 });
