@@ -4,7 +4,18 @@ sqlite3.verbose();
 import fs from 'fs';
 
 // SQLite-Datenbankverbindung herstellen
-const db = new sqlite3.Database('./locations.db');
+const db = new sqlite3.Database('./data/Highchart_sql.sqlite');
+
+
+
+
+
+
+
+
+
+
+
 
 // Datenbanktabelle erstellen (falls sie noch nicht existiert)
 db.run(`CREATE TABLE IF NOT EXISTS Locations (
