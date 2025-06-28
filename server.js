@@ -27,7 +27,7 @@ ex.use(express.static('public'));
 
 // Stellt eine REST-API unter /locations zur Verfügung, um auf die Datenbank
 // zugreifen zu können
-ex.use('/locations', restApi);
+ex.use('/Highchart_sql', restApi);
 
 // Setze den Port und erzeuge den Server
 const port = 53000;

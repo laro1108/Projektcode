@@ -58,33 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Daten für Chart anpassen 
-function initChart(fachabteilung = 'INSG') {
-  fetch('./data/KHVerzeichnis_highchart.csv')
-    .then(response => response.text())
-    .then(csvText => {
-      const lines = csvText.trim().split('\n');
-      const headers = lines[0].split(';').map(h => h.trim());
+function initChart(fachabteilung = 'insg') {
+  fetch(`/Highchart_sql/betten?fachabteilung=${encodeURIComponent(fachabteilung)}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log('Empfangene Daten:', data);
 
-      const index = headers.indexOf(fachabteilung);
-      if (index === -1) {
-        console.error(`Spalte "${fachabteilung}" nicht gefunden.`);
-        return;
-      }
-
-      const data = {};
-      for (let i = 1; i < lines.length; i++) {
-        const cols = lines[i].split(';').map(col => col.trim());
-        const stadt = cols[0];
-        const bettenZahl = Number(cols[index]);
-
-        console.log(`Zeile ${i}: ${stadt} => ${bettenZahl}`);
-
-        if (!stadt || isNaN(bettenZahl)) continue;
-        data[stadt] = bettenZahl;
-      }
-
-      const categories = Object.keys(data);
-      const values = Object.values(data);
+      const categories = data.map(row => row.stadt);
+      const values = data.map(row => Number(row.betten));
 
       Highcharts.chart('chart-inner-container', {
         chart: { type: 'column' },
@@ -106,17 +87,14 @@ function initChart(fachabteilung = 'INSG') {
         },
         series: [{
           name: 'Betten',
-          data: categories.map(stadt => ({
-            name: stadt,
-            y: data[stadt]
-          }))
+          data: values
         }]
       });
     })
-    .catch(err => console.error('Fehler beim Laden der CSV:', err));
+    .catch(err => console.error('Fehler beim Abrufen der Daten:', err));
 }
-  // Checkbox-Logik für Layer-Schalter - Hilfe von ChatGPT
-  document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(function (checkbox) {
+// Checkbox-Logik für Layer-Schalter - Hilfe von ChatGPT
+document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(function (checkbox) {
   checkbox.addEventListener('change', function () {
     const layerName = this.dataset.layer;
     const layer = layerMap[layerName];
@@ -129,8 +107,8 @@ function initChart(fachabteilung = 'INSG') {
     }
   });
 });
-  // Layer-Schalter-Panel öffnen/schließen
-  document.getElementById('toggleLayerButton').addEventListener('click', function () {
+// Layer-Schalter-Panel öffnen/schließen
+document.getElementById('toggleLayerButton').addEventListener('click', function () {
   const layerToggle = document.getElementById('layer-toggle');
   const layerPanel = document.getElementById('layer-panel');
   layerToggle.classList.toggle('open');
