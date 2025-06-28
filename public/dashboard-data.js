@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Daten für Chart anpassen
+// Daten für Chart anpassen 
 function initChart(fachabteilung = 'INSG') {
   fetch('./data/KHVerzeichnis_highchart.csv')
     .then(response => response.text())

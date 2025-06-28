@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // Layer definieren
+  // Layer definieren 
   var boundaryLayer = L.tileLayer.wms('http://localhost:8080/geoserver/ne/wms', {
     layers: 'ne:boundary_lines',
     format: 'image/png',
