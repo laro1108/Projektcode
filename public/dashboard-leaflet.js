@@ -8,12 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }).addTo(map);
 
   // Layer definieren 
-  var boundaryLayer = L.tileLayer.wms('http://localhost:8080/geoserver/ne/wms', {
-    layers: 'ne:boundary_lines',
+  var hborisZonenLayer = L.tileLayer.wms('https://www.gds-srv.hessen.de/cgi-bin/lika-services/ogc-free-maps.ows?', {
+    layers: 'hboris_zonen_t',
     format: 'image/png',
-    transparent: true,
-    attribution: 'Daten: GeoServer'
+    transparent: true, // wichtig!
+    version: '1.3.0',
+    attribution: 'Datenquelle: Hessische Verwaltung hboris'
   });
+
 
   var krankenhausLayer = L.tileLayer.wms('http://localhost:8080/geoserver/cite/wms', {
     layers: 'cite:Krankenhaeuser_punkte_utm',
@@ -58,18 +60,17 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Standard-Layer anzeigen
-  boundaryLayer.addTo(map);
-
   const layerMap = {
-    krankenhaus: krankenhausLayer,
-    krankenhausPuffer: krankenhausLayerPuffer,
-    apotheken: apothekenLayer,
-    apothekenPuffer: apothekenLayerPuffer,
-    aerzte: aerzteLayer,
-    aerztePuffer: aerzteLayerPuffer
+    krankenhausLayer: krankenhausLayer,
+    krankenhausLayerPuffer: krankenhausLayerPuffer,
+    apothekenLayer: apothekenLayer,
+    apothekenLayerPuffer: apothekenLayerPuffer,
+    aerzteLayer: aerzteLayer,
+    aerzteLayerPuffer: aerzteLayerPuffer,
+    hborisZonenLayer: hborisZonenLayer
   };
 
- // Hilfe von chatgpt
+  // Hilfe von chatgpt
   document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {
       const layerName = this.dataset.layer;
@@ -100,14 +101,3 @@ document.addEventListener('DOMContentLoaded', function () {
     e.stopPropagation();
   });
 });
-
-function zoomTo(lat, lon, name) {
-  if (selectedMarker) {
-    map.removeLayer(selectedMarker);
-  }
-  selectedMarker = L.marker([lat, lon]).addTo(map)
-    .bindPopup(`<strong>${name}</strong>`)
-    .openPopup();
-
-  map.setView([lat, lon], 14);
-}
