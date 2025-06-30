@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
     aerztePuffer: aerzteLayerPuffer
   };
 
-  // Hilfe von chatgpt
+ // Hilfe von chatgpt
   document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {
       const layerName = this.dataset.layer;
@@ -100,3 +100,14 @@ document.addEventListener('DOMContentLoaded', function () {
     e.stopPropagation();
   });
 });
+
+function zoomTo(lat, lon, name) {
+  if (selectedMarker) {
+    map.removeLayer(selectedMarker);
+  }
+  selectedMarker = L.marker([lat, lon]).addTo(map)
+    .bindPopup(`<strong>${name}</strong>`)
+    .openPopup();
+
+  map.setView([lat, lon], 14);
+}

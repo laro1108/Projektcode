@@ -21,6 +21,14 @@
 <body>
   <h1>Fetzige Karte</h1>
 
+  <!-- Suchfeld für Klinikatlas -->
+  <div id="searchWrapper">
+    <input type="text" id="searchInput" placeholder="Klinik suchen..." oninput="performSearch()" />
+  </div>
+
+  <!-- Ergebnisanzeige -->
+  <pre id="searchResults">Keine Ergebnisse</pre>
+
   <!-- Div, in welches die Karte geladen wird -->
   <div id="myMap">Noch keine Karte geladen</div>
 

@@ -119,3 +119,43 @@ h2 {
   height: 100%;
 }
 
+#searchWrapper {
+  position: fixed;
+  top: 1vh;
+  left: 7vh;
+  background-color: rgba(60, 60, 60, 0.8);
+  z-index: 1200; /* höher als alles andere */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+#searchInput {
+  padding: 0.5rem;
+  width: 300px;
+}
+#searchResults {
+  flex-direction: column; /* Damit die Einträge untereinander angezeigt werden */
+  position: fixed;
+  top: 10vh;
+  left: 6vh;
+  background-color: rgba(60, 60, 60, 0.8);
+  z-index: 1200; /* höher als alles andere */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.resultItem {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  color: white;
+  line-height: 1.4;
+}
+
