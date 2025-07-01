@@ -1,6 +1,9 @@
+let map;
+let selectedMarker;
+
 document.addEventListener('DOMContentLoaded', function () {
   // Karte erstellen
-  var map = L.map('myMap').setView([50, 9], 6);
+ map = L.map('myMap').setView([50, 9], 6);
 
   // Hintergrundkarte (optional)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -101,3 +104,14 @@ document.addEventListener('DOMContentLoaded', function () {
     e.stopPropagation();
   });
 });
+
+function zoomTo(lat, lon, name) {
+  if (selectedMarker) {
+    map.removeLayer(selectedMarker);
+  }
+  selectedMarker = L.marker([lat, lon]).addTo(map)
+    .bindPopup(`<strong>${name}</strong>`)
+    .openPopup();
+
+  map.setView([lat, lon], 14);
+}
