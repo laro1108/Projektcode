@@ -22,6 +22,9 @@ ex.use('/locations', restApi);
 // Krankenhaussuche über API
 ex.use('/api/search', searchApi);
 
+// WFS
+ex.use(express.static('public'));
+
 // Setze den Port und erzeuge den Server
 const port = 53000;
 const server = ex.listen(port, () => {

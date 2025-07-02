@@ -124,6 +124,30 @@ h2 {
   align-items: center;
 }
 
+#qualityToggleBtn {
+  position: fixed;
+  bottom: 7vh;
+  left: 1vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 8px;
+  padding:12px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 24px;
+  text-align: center;
+  line-height: 24px;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+#qualityToggleBtn.active {
+  background-color: #8f8;
+  border-color: #484;
+}
+
 #searchInput {
   padding: 0.5rem;
   width: 300px;

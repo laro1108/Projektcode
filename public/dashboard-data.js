@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Daten für Chart anpassen 
 function initChart(fachabteilung = 'insg') {
-  fetch(`/Highchart_sql/betten?fachabteilung=${encodeURIComponent(fachabteilung)}`)
+  fetch(`/locations/betten?fachabteilung=${encodeURIComponent(fachabteilung)}`)
     .then(response => response.json())
     .then(data => {
       console.log('Empfangene Daten:', data);
