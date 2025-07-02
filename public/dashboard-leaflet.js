@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var hborisZonenLayer = L.tileLayer.wms('https://www.gds-srv.hessen.de/cgi-bin/lika-services/ogc-free-maps.ows?', {
     layers: 'hboris_zonen_t',
     format: 'image/png',
-    transparent: true, // wichtig!
+    transparent: true, // wichtig, sonst überlagern sie sich
     version: '1.3.0',
     attribution: 'Datenquelle: Hessische Verwaltung hboris'
   });
@@ -62,6 +62,28 @@ document.addEventListener('DOMContentLoaded', function () {
     attribution: 'Daten: GeoServer'
   });
 
+  // ServiceLocation Layer aus externem WFS (GeoJSON)
+const serviceLocationLayer = L.geoJSON(null, {
+  pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, {
+      radius: 5,
+      fillColor: '#3388ff',
+      color: '#000',
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    });
+  },
+  onEachFeature: function (feature, layer) {
+    let props = feature.properties;
+    let popup = '<strong>Service Location</strong><br>';
+    for (let key in props) {
+      popup += `<strong>${key}:</strong> ${props[key]}<br>`;
+    }
+    layer.bindPopup(popup);
+  }
+});
+
   // Standard-Layer anzeigen
   const layerMap = {
     krankenhausLayer: krankenhausLayer,
@@ -70,7 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
     apothekenLayerPuffer: apothekenLayerPuffer,
     aerzteLayer: aerzteLayer,
     aerzteLayerPuffer: aerzteLayerPuffer,
-    hborisZonenLayer: hborisZonenLayer
+    hborisZonenLayer: hborisZonenLayer,
+    serviceLocationLayer: serviceLocationLayer,
   };
 
   // Hilfe von chatgpt

@@ -3,25 +3,6 @@ var poiList = [];
 var userLongitude = 0.0;
 var userLatitude = 0.0;
 
-// Bestimmen der aktuellen Position und abspeichern nach userLongitude und userLatitude
-function getUserCoordinates() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log('[getUserLocation] Position des Nutzers:', position.coords);
-      userLongitude = position.coords.longitude;
-      userLatitude = position.coords.latitude;
-      document.getElementById('userCoordinates').innerHTML = "(" +
-        userLongitude + ", " + userLatitude + ")";
-    }, error => {
-      if (error.code === error.POSITION_UNAVAILABLE) {
-        console.warn('Position unbekannt, versuche es später erneut.');
-      } else {
-        console.error('Geolocation-Fehler:', error.message);
-      }
-    });
-  }
-}
-
 // Toggle-Button Klick Für Chart verantwortlich
 document.addEventListener('DOMContentLoaded', () => {
   const toggleButton = document.getElementById('toggleChartButton');
@@ -93,6 +74,7 @@ function initChart(fachabteilung = 'insg') {
     })
     .catch(err => console.error('Fehler beim Abrufen der Daten:', err));
 }
+
 // Checkbox-Logik für Layer-Schalter - Hilfe von ChatGPT
 document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(function (checkbox) {
   checkbox.addEventListener('change', function () {
@@ -107,6 +89,7 @@ document.querySelectorAll('#layer-panel input[type="checkbox"]').forEach(functio
     }
   });
 });
+
 // Layer-Schalter-Panel öffnen/schließen
 document.getElementById('toggleLayerButton').addEventListener('click', function () {
   const layerToggle = document.getElementById('layer-toggle');

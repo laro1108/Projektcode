@@ -2,9 +2,9 @@
 <html>
 
 <head>
-  <!-- Im Head müssen externe und lokale JS/CSS-Dateien geladen werden -->
+  <!-- Laden externe und lokale JS/CSS-Dateien -->
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Fetzige Karte</title>
+  <title>Standortanalyse Arzt Apotheke Krankenhaus</title>
 
   <!-- Leaflet CSS und JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -21,8 +21,6 @@
 </head>
 
 <body>
-  <h1>Fetzige Karte</h1>
-
   <!-- Suchfeld für Klinikatlas -->
   <div id="searchWrapper">
     <input type="text" id="searchInput" placeholder="Klinik suchen..." oninput="performSearch()" />
@@ -69,8 +67,6 @@
       <input type="checkbox" data-layer="aerzteLayer"> Ärzte Layer<br>
       <input type="checkbox" data-layer="aerzteLayerPuffer"> Ärzte Puffer<br>
       <input type="checkbox" data-layer="hborisZonenLayer"> HBORIS Zonen<br>
+      <input type="checkbox" data-layer="serviceLocationLayer"> WFS Layer<br>
     </div>
-  </div>
-  <!-- Div, in welchem die Position des Users angezeigt wird -->
-  <div id="userCoordinates"></div>
 </body>

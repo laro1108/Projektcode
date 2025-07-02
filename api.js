@@ -1,9 +1,9 @@
-// API Suchmachine für Krankenhäuser
+// API Suchmaschine für Krankenhäuser
 import express from 'express';
 
-const ex = express();
+const router = express.Router(); // ✅ nur einen Router erzeugen
 
-ex.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   const query = req.query.q?.toLowerCase();
 
   if (!query) {
@@ -19,7 +19,6 @@ ex.get('/', async (req, res) => {
 
     const data = await response.json();
 
-    // Funktion zum Prüfen, ob Koordinaten in Hessen liegen
     const isInHessen = (lat, lon) => {
       return (
         lat >= 49.948229196 && lat <= 51.6540496066 &&
@@ -27,7 +26,6 @@ ex.get('/', async (req, res) => {
       );
     };
 
-    // Filtern nach Name, Fachrichtung UND Koordinaten
     const filtered = data.filter(item => {
       const nameMatch = item.name?.toLowerCase().includes(query);
       const specializationMatch = item.specializations?.some(s => s.toLowerCase().includes(query));
@@ -35,9 +33,7 @@ ex.get('/', async (req, res) => {
       const lat = parseFloat(item.latitude);
       const lon = parseFloat(item.longitude);
 
-      const isHessenMatch = isInHessen(lat, lon);
-
-      return (nameMatch || specializationMatch) && isHessenMatch;
+      return (nameMatch || specializationMatch) && isInHessen(lat, lon);
     });
 
     res.json(filtered);
@@ -48,4 +44,4 @@ ex.get('/', async (req, res) => {
   }
 });
 
-export default ex;
+export default router;
